@@ -1,159 +1,144 @@
-# 🛒 Store Mart – Shop Management System
+# 🛒 Store Management System (Java + MySQL)
 
-A console-based Retail Management System developed using **Java, JDBC, and MySQL**.  
-This application allows sellers to manage products and customers to purchase items with automatic billing and stock updates.
-
----
-
-## 📌 Project Overview
-
-Store Mart is a role-based shop management system designed to handle:
-
-- Product inventory management
-- Customer purchasing and billing
-- Seller administrative operations
-- Real-time stock updates
-- Order recording
-
-The system demonstrates practical implementation of **JDBC connectivity, SQL operations, and structured programming in Java**.
+A simple **Store Management System** built using **Java (Swing GUI)** and **MySQL**.  
+This project allows sellers to manage products and customers to purchase items with automatic stock updates.
 
 ---
 
-## 🚀 Features
+## 📌 Features
 
-### 👨‍💼 Seller Module
+### 👨‍💼 Seller (Admin)
 - Add new products
 - View all products
-- Update product price and stock
+- Update product details (price, stock)
 - Delete products
 - Password-protected access
 
-### 🛍 Customer Module
+### 🛍️ Customer
 - View available products
-- Purchase multiple products
-- Automatic bill generation
-- Stock validation before purchase
-- Order details stored in database
-
-### 🧾 Billing System
-- Calculates total amount dynamically
-- Prevents purchase if stock is insufficient
-- Updates inventory automatically
-- Stores order history in `orders` table
+- Purchase products
+- Automatic stock validation
+- Displays success/failure messages
 
 ---
 
-## 🛠 Tech Stack
+## 🗄️ Database Design
 
-- **Language:** Java
-- **Database:** MySQL
-- **Connectivity:** JDBC
-- **Driver:** MySQL Connector/J
-- **Architecture:** Console-based role-driven application
+### Product Table
+| Column | Type | Description |
+|--------|------|------------|
+| id | INT | Product ID (Primary Key) |
+| name | VARCHAR | Product Name |
+| price | DOUBLE | Product Price |
+| stock | INT | Available Quantity |
 
----
-
-## 🗄 Database Schema
-
-### Database: `shop`
-
-#### Table: `product`
-| Column | Type |
-|--------|------|
-| id     | INT (Primary Key) |
-| name   | VARCHAR |
-| price  | DOUBLE |
-| stock  | INT |
-
-#### Table: `orders`
-| Column | Type |
-|--------|------|
-| pid    | INT |
-| pname  | VARCHAR |
-| qty    | INT |
-| total  | DOUBLE |
+### Orders Table
+| Column | Type | Description |
+|--------|------|------------|
+| pid | INT | Product ID (Foreign Key) |
+| pname | VARCHAR | Product Name |
+| qty | INT | Quantity Purchased |
+| total | DOUBLE | Total Cost |
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Technologies Used
 
-1. Install MySQL Server.
-2. Create database:
+- Java (JDK 8+)
+- Java Swing (GUI)
+- JDBC (Database Connectivity)
+- MySQL (Database)
+- SQL
+
+---
+
+## 🧠 System Workflow
+
+1. User selects role (Seller / Customer)
+2. Seller logs in using password
+3. Seller manages products (CRUD operations)
+4. Customer views products
+5. Customer selects product and quantity
+6. System checks stock availability
+7. If valid:
+   - Purchase is processed
+   - Stock is updated
+   - Order is stored
+8. Else:
+   - Error message shown
+
+---
+
+## 🛠️ Setup Instructions
+
+1. Install MySQL and create database:
    ```sql
    CREATE DATABASE shop;
-   USE shop;
    ```
-3. Create required tables.
-4. Update database credentials in the code:
+2. Create tables:
+
+   ```sql
+
+   CREATE TABLE product (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    price DOUBLE,
+    stock INT
+   );
+
+   CREATE TABLE orders (
+    pid INT,
+    pname VARCHAR(100),
+    qty INT,
+    total DOUBLE,
+    FOREIGN KEY (pid) REFERENCES product(id)
+   );
+
+   ```
+
+3. Update DB credentials in Shop.java:
+
    ```java
-   DriverManager.getConnection(
-       "jdbc:mysql://localhost:3306/shop",
-       "root",
-       "your_password"
+   Connection con = DriverManager.getConnection(
+    "jdbc:mysql://localhost:3306/shop",
+    "root",
+    "your_password"
    );
    ```
-5. Add MySQL Connector JAR to project classpath.
-6. Compile and run:
+
+Run the project:
+
    ```bash
-   javac com/shop/Shop.java
-   java com.shop.Shop
+   javac -cp ".;mysql-connector-j-8.0.33.jar" com/shop/*.java
+   java -cp ".;mysql-connector-j-8.0.33.jar" com/shop/shop.java
    ```
 
----
 
-## 🔐 Access Credentials
+## 🔐 Security
+- Basic password authentication for seller access
+- Prevents invalid transactions (e.g., insufficient stock)
 
-Seller Login Password:
-```
-1100
-```
+## 🚀 Future Enhancements
+- User authentication system (login/signup)
+- Billing system with invoice generation
+- Web-based version (HTML/CSS/JS + Backend)
+- Search and filter products
+- Reports and analytics dashboard
 
----
-
-## 📂 Project Structure
-
-```
-|utils
-|-> DBInitializer.java
-|-> ProductManager.java
-|-> PurchaseManager.java
-|-> SecurityManager.java
-|mysql-connector-j-8.0.33.jar
-|Shop.java
-|README.md
-```
-
----
-
-## 💡 Key Concepts Demonstrated
-
-- JDBC Connection Handling
-- PreparedStatement Usage
-- ResultSet Processing
-- SQL CRUD Operations
-- Exception Handling
-- Role-Based Console Navigation
-- Real-Time Inventory Updates
-
----
-
-## 📈 Future Improvements
-
-- Implement transaction management
-- Add user authentication system (username & password)
-- Generate sales reports
-- Add search and filter functionality
-- Convert to Spring Boot REST API
-- Implement layered architecture (DAO, Service, Model)
-
----
+## 📚 References
+Java Documentation – https://docs.oracle.com/javase
+JDBC Documentation – https://docs.oracle.com/javase/tutorial/jdbc
+MySQL Documentation – https://dev.mysql.com/doc
+GeeksforGeeks – Java & JDBC Tutorials
 
 ## 👨‍💻 Author
+R V S V KARTHIK
 
-Developed as a practical database-driven Java application to simulate real-world retail store operations.
+## 📌 Note
 
----
+This project is developed as a college mini project to demonstrate concepts of:
 
-## 📄 License
-
-This project is open-source and free to use for educational purposes.
+1. Java programming
+2. GUI development
+3. Database integration
+4. Basic system design
